@@ -1,2 +1,2 @@
 # MATLAB
-Using MATLAB solution BP problem. 
+Solve BP problems with MATLAB.
