@@ -8,7 +8,7 @@ lr = alg.learnRate;
 mc = 0.9;
 lr_inc = 1.05;
 lr_dec = 0.7;
-pre_ee = inf;
+pre_ee = 0;
 %max_perf_inc = 1.04;
 [m,n] = size(alg.w{2});
 [mm,nn] = size(alg.w{1});
@@ -29,12 +29,12 @@ for i = 1:prob.runIndexFinish
     y_delta2 = sumsqr(a);
     err = y_delta2/2/M;
     eb = horzcat(eb,err);
-    ebb = 0.01;
+    ebb = 0.005;
     if err < ebb
         break;
     end
     
-    o_grid = (y - alg.outputAtLayers{3}) .* dlogsig(alg.outputAtLayers{3},1-alg.outputAtLayers{3});%输出层梯度
+    o_grid = (y - alg.outputAtLayers{3}) .* dlogsig(alg.outputAtLayers{3},1-alg.outputAtLayers{3});
     h_grid = o_grid * alg.w{2}' .* dlogsig(alg.outputAtLayers{2},1-alg.outputAtLayers{2});
     %
     
@@ -48,9 +48,9 @@ for i = 1:prob.runIndexFinish
     alg.t{2} = alg.t{2} - lr * (1-mc) * dB - mc * pre_dB;
     alg.t{1} = alg.t{1} - lr * (1-mc) * db - mc * pre_db;
     pre_dWEX = dWEX;
-    pre_dB = o_grid;
+    pre_dB = dB;
     pre_dwex = dwex;
-    pre_db = h_grid;
+    pre_db = db;
     
     if err <= pre_ee
         lr = lr * lr_inc;
@@ -63,7 +63,8 @@ end
 %[mine,index] = min(e)
 figure;
 plot(eb);
-title('批量自适动量梯度下降法');
+title('批量自适应动量梯度下降法');
 %disp(alg.outputAtLayers{3})
 disp(err)
+disp(i)
 end

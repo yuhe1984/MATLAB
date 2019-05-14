@@ -25,7 +25,7 @@ for i = 1:prob.runIndexFinish
     y_delta2 = sumsqr(a);
     err = y_delta2/2/M;
     eb = horzcat(eb,err);
-    ebb = 0.01;
+    ebb = 0.005;
     if err < ebb
         break;
     end
@@ -44,14 +44,15 @@ for i = 1:prob.runIndexFinish
     alg.t{2} = alg.t{2} - lr * (1-mc) * dB - mc * pre_dB;
     alg.t{1} = alg.t{1} - lr * (1-mc) * db - mc * pre_db;
     pre_dWEX = dWEX;
-    pre_dB = o_grid;
+    pre_dB = dB;
     pre_dwex = dwex;
-    pre_db = h_grid;
+    pre_db = db;
 end
 %[mine,index] = min(e)
 figure;
 plot(eb);
 title('批量动量梯度下降法')
 %disp(alg.outputAtLayers{3});
-disp(err)
+%disp(err)
+disp(i)
 end
