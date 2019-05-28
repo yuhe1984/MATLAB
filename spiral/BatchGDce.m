@@ -26,9 +26,9 @@ for i = 1:prob.runIndexFinish
     end
     
     grid4 = (y - alg.outputAtLayers{5});%Êä³ö²ãÌÝ¶È
-    grid3 = grid4 * alg.w{4}';
-    grid2 = grid3 * alg.w{3}';
-    grid1 = grid2 * alg.w{2}';
+    grid3 = grid4 * alg.w{4}' .* dlogsig(alg.outputAtLayers{4},1-alg.outputAtLayers{4});
+    grid2 = grid3 * alg.w{3}' .* dlogsig(alg.outputAtLayers{3},1-alg.outputAtLayers{3});
+    grid1 = grid2 * alg.w{2}' .* dlogsig(alg.outputAtLayers{2},1-alg.outputAtLayers{2});
     dwex4 = (alg.outputAtLayers{4}' * grid4)/M;
     dwex3 = (alg.outputAtLayers{3}' * grid3)/M;
     dwex2 = (alg.outputAtLayers{2}' * grid2)/M;
